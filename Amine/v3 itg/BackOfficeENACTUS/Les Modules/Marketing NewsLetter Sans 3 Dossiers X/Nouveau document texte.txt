@@ -1,0 +1,82 @@
+<!-- ============================================================== -->
+                        <!-- valifation types -->
+                        <!-- ============================================================== -->
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <h5 class="card-header">Ajouter Une Banniere de Publicité</h5>
+                                <div class="card-body">
+                                    <form id="BanniereAjoutForm" method="POST" >
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Réference</label>
+                                            <div class="col-12 col-sm-8 col-lg-6">
+                                                <input type="text" id="Réference_Banniere_Pub" placeholder="Réference de la Banniére" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Nom</label>
+                                                <div class="col-12 col-sm-8 col-lg-6">
+                                                    <input type="text" id="Nom_Banniere_Pub" placeholder="Nom de la Banniére" class="form-control">
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Catégories Personne Ciblé</label>
+                                                <div class="col-12 col-sm-8 col-lg-6">
+                                                    <select name="CatégoriesPersonne_Banniere_Pub" id="CatégoriesPersonne_Banniere_Pub" class="form-control">
+                                                        <option value="All">All</option>
+                                                        <option value="Agriculteur">Agriculteur</option>
+                                                        <option value="Médecin">Médecin</option>
+                                                        <option value="Paticulier">Paticulier</option>
+                                                        <option value="Autre">Autre</option>
+                                                    </select>
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Date Début</label>
+                                                <div class="col-12 col-sm-8 col-lg-6">
+                                                    <input type="date" id="DateDébut_Banniere_Pub" class="form-control">
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Date Fin</label>
+                                                <div class="col-12 col-sm-8 col-lg-6">
+                                                    <input type="date" id="DateFin_Banniere_Pub" class="form-control">
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Lien URL de la Banniére</label>
+                                                <div class="col-12 col-sm-8 col-lg-6">
+                                                    <input type="text" id="URL_Banniere_Pub" placeholder="Lien URL de la Banniére" class="form-control">
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">Déscription</label>
+                                            <div class="col-12 col-sm-8 col-lg-6">
+                                                <textarea id="Décription_Banniere_Pub_TextArea" placeholder="Déscription de la Banniére" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div >
+                                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Ajouter Des Images</label>
+                                                <input type="file" id="files" name="files" multiple><br/>
+                                                
+                                            </div>
+                                        
+                                        <div class="form-group row text-right">
+                                            <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
+                                                <button type="reset" class="btn btn-space btn-secondary">Reset</button>
+                                                <button type="submit" class="btn btn-space btn-primary">Ajouter</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ============================================================== -->
+                        <!-- end valifation types -->
+                        <!-- ============================================================== -->
