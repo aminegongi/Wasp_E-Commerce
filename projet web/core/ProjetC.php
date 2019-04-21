@@ -1,11 +1,11 @@
 <?PHP
-include "config.php";
+require_once  "configP.php";
 class ProjetC {
 
     
 	function ajouterProjet($Projet){
 		$sql="insert into projet (ID,nom,date,logo,type) values (:ID,:nom,:date,:logo,:type)";
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
 		try{
         $req=$db->prepare($sql);
 		
@@ -36,7 +36,7 @@ class ProjetC {
 	function afficherProjets(){
 		//$sql="SElECT * From Projet e inner join formationphp.Projet a on e.cin= a.cin";
 		$sql="SElECT * From projet";
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
 		try{
 		$liste=$db->query($sql);
 		return $liste;
@@ -47,7 +47,7 @@ class ProjetC {
 	}
 	function supprimerProjet($ID){
 		$sql="DELETE FROM projet where ID= :ID";
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
         $req=$db->prepare($sql);
 		$req->bindValue(':ID',$ID);
 		try{
@@ -61,7 +61,7 @@ class ProjetC {
 	function modifierProjet($Projet,$ID){
 		$sql="UPDaTE projet SET ID=:IDD,nom=:nom,date=:date,logo=:logo,type=:type where ID=:ID";
 		
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
 		//$db->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
 try{		
         $req=$db->prepare($sql);
@@ -97,7 +97,7 @@ try{
     function recupererProjet($ID)
     {
 		$sql="select * from projet where ID='$ID' ";
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
 		try{
 		$liste=$db->query($sql);
 		return $liste;
@@ -109,7 +109,7 @@ try{
 	
 	function rechercherListeProjets($nom){
 		$sql="SELECT * from projet where nom like '%$nom%' ";
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
 		try{
 		$liste=$db->query($sql);
 		return $liste;
@@ -122,7 +122,7 @@ try{
 	function count()
 	{
 		$sql="SElECT * From projet";
-		$db = config::getConnexion();	
+		$db = configP::getConnexion();	
 		try{
 			$count=$db->query($sql);
 			if ($count->rowCount())
@@ -142,7 +142,7 @@ try{
     function afficherODD()
 	{
 		$sql="SElECT * From odd";
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
 		try{
 		$liste=$db->query($sql);
 		return $liste;
@@ -154,7 +154,7 @@ try{
 	function tri()
 	{
 		$sql="SELECT * from projet order by nom ASC ";
-		$db = config::getConnexion();
+		$db = configP::getConnexion();
 		try{
 		$liste=$db->query($sql);
 		return $liste;
@@ -164,6 +164,80 @@ try{
 		}
 			
 	}
+	function recupererID($IDP)
+	{
+		$sql="SELECT * from admin where IDP='$IDP'";
+		$db = configP::getConnexion();
+		try{
+		$liste=$db->query($sql);
+		return $liste;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }
+	}
+
+	function ProjetSupprimer($ID)
+	{
+		$sql="UPDaTE admin SET IDP='undefined' where ID=".$ID."";
+		$db = configP::getConnexion();
+		try{		
+			$req=$db->prepare($sql);
+			$s=$req->execute();
+		   }
+		catch (Exception $e)
+		{
+            echo " Erreur ! ".$e->getMessage();
+        }
+	}
+	function recupererProduit_id_projet($ID)
+    {
+        $sql="SELECT * from produit where id_projet='$ID' ";
+
+		$db = configP::getConnexion();
+		try{
+		$liste=$db->query($sql);
+		return $liste;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }   
+	}
+	function SupprimerProduit_id_projet($ID)
+    {
+		$sql="Delete from produit where id_projet='$ID' ";
+
+		$db = configP::getConnexion();
+		try{
+		$liste=$db->query($sql);
+		return $liste;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }   
+	}
+	function Delete_File($path)
+    {
+        if (is_dir($path) === true)
+        {
+            $files = array_diff(scandir($path), array('.', '..'));
+
+            foreach ($files as $file)
+            {
+                //this->Delete_File(realpath($path) . '/' . $file);
+                $this->Delete_File(realpath($path).'/'.$file);
+            }
+
+            return rmdir($path);
+        }
+
+        else if (is_file($path) === true)
+        {
+            return unlink($path);
+        }
+
+        return false;
+    }
 }
 
 ?>

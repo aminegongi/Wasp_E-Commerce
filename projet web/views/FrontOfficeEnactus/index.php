@@ -84,21 +84,16 @@
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                   </button>
-							   </div>
-							   
-							  <div class="collapse navbar-collapse" id="navbar">
-                            
+							   </div>					   
+							  <div class="collapse navbar-collapse" id="navbar">                    
 									<ul class="nav navbar-nav">
 									  <li><a href="#home" class="js-target-scroll">Acceuil</a></li>
 									  <li><a href="#services" class="js-target-scroll">Introduction</a></li>
 									  <li><a href="#work" class="js-target-scroll">Les Projets</a></li>
                                       <li><a href="#contact" class="js-target-scroll">Contact</a></li>
-                                      <li><a href="#" ><img src="images/user.svg" alt="https://www.flaticon.com/authors/freepik"	width="30px" height=auto style="background-color:white;" ></a></li>
+                                      <li><a href="./login/login.php" ><img src="images/user.svg" alt="https://www.flaticon.com/authors/freepik"	width="30px" height=auto style="background-color:white;" ></a></li>
                                     </ul>
                                 </div>
-							  
-							 
-       			
 						</nav>
 					</div>
     	  </div>
@@ -162,42 +157,17 @@
 				</div>		
 
 				<div style="margin-left: 7% " >
-					<div class="containerImage">
-							<a href="./Projet/EScope/index.html"> <img src="images/e-scope.jpg" alt="escope" class="image">
-							<div class="overlayImage">
-								<div class="textImage">E-SCOPE<p>Un accessoire pour Microscope</p></div>
-							</div>
-							</a>
-					</div>
                     <?PHP
                                 $i=1;
                                 foreach($listeProjet as $row){
                     ?>                 
 					<div class="containerImage">
-                    <a href="./Projet/<?php echo $row['nom']; ?>/index.html"><img src="../Back Office ENACTUS/Les Modules/Gestion Projets/<?php echo $row['logo']; ?>" alt="<?php echo $row['logo']; ?>" class="image">
+                    <a name="ID" href="./Projet/<?php echo $row['nom']; ?>/index.php?ID=<?php echo $row['ID']; ?>"><img src="../Back Office ENACTUS/Les Modules/Gestion Projets/<?php echo $row['logo']; ?>" alt="<?php echo $row['logo']; ?>" class="image">
 							<div class="overlayImage">
 								<div class="textImage"><?php echo $row['nom']; ?></div>
 							</div>
                     </div>
                             <?php 
-                                $dir_source = './Projet/EScope';
-                                $dir_dest = './Projet/'.$row['nom'];
-
-                            if (!file_exists($dir_dest))
-                            {
-                                mkdir($dir_dest, 0755);
-                                $dir_iterator = new RecursiveDirectoryIterator($dir_source, RecursiveDirectoryIterator::SKIP_DOTS);
-                                $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST); 
-                                foreach($iterator as $element){
-                                
-                                   if($element->isDir()){
-                                      mkdir($dir_dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
-                                   } 
-                                   else{
-                                      copy($element, $dir_dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
-                                   }
-                                }
-                            }
                         }?>
         </div>		
 			</div>

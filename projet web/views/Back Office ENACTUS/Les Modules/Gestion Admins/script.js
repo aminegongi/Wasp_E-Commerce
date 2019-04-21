@@ -14,7 +14,9 @@ output.src=URL.createObjectURL(event.target.files[0]);
 function surligne(champ, erreur)
 {
    if(erreur)
+   {
       champ.style.backgroundColor = "#fba";
+   }
    else
       champ.style.backgroundColor = "#98FB98";
 }
@@ -127,10 +129,11 @@ function verifForm(f)
    var passOk = verifPass(f.password);
    var phoneOK = verifNumb (f.phone);
    var locationOK = verifLocation(f.select_Project);
-   var projectOK = verifProjet (f.select_City);
-   
-   if(pseudoOk && mailOk && passOk && phoneOK && locationOK && projectOK)
+   if(pseudoOk && mailOk && passOk && phoneOK && locationOK )  
+   {
+   alert("pls");
       return true;
+   }
    else
    {
       alert("Veuillez remplir correctement tous les champs");

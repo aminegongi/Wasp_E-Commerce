@@ -4,7 +4,7 @@ class AdminC {
 
 	
 	function ajouterAdmin($admin){
-		$sql="insert into admin (ID,pseudo,mail,Adresse,image,passwd,NumTel) values (:ID,:pseudo,:mail,:Adresse,:image,:passwd,:NumTel)";
+		$sql="insert into admin (ID,pseudo,mail,Adresse,image,passwd,NumTel,IDP) values (:ID,:pseudo,:mail,:Adresse,:image,:passwd,:NumTel,:IDP)";
 		$db = config::getConnexion();
 		try{
         $req=$db->prepare($sql);
@@ -16,6 +16,7 @@ class AdminC {
 		$Image=$admin->getImage();
 		$Passwd=$admin->getPasswd();
 		$NumTel=$admin->getNumTel();
+		$IDP=$admin->getIDP();
 
 
 		$req->bindValue(':ID',$ID);
@@ -25,6 +26,7 @@ class AdminC {
 		$req->bindValue(':image',$Image);
 		$req->bindValue(':passwd',$Passwd);
 		$req->bindValue(':NumTel',$NumTel);
+		$req->bindValue(':IDP',$IDP);
 
 
             $req->execute();
@@ -62,10 +64,9 @@ class AdminC {
         }
 	}
 	function modifierAdmin($admin,$ID){
-		$sql="UPDaTE admin SET ID=:IDD,pseudo=:pseudo,mail=:mail,Adresse=:Adresse,image=:image,passwd=:passwd,NumTel=:NumTel where ID=:ID";
+		$sql="UPDaTE admin SET ID=:IDD,pseudo=:pseudo,mail=:mail,Adresse=:Adresse,image=:image,passwd=:passwd,NumTel=:NumTel,IDP=:IDP where ID=:ID";
 		
 		$db = config::getConnexion();
-		//$db->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
 try{		
         $req=$db->prepare($sql);
 
@@ -76,9 +77,10 @@ try{
 		$Image=$admin->getImage();
 		$Passwd=$admin->getPasswd();
 		$NumTel=$admin->getNumTel();
+		$IDP=$admin->getIDP();
 
 
-		$datas = array(':IDD'=>$IDD, ':ID'=>$ID, ':pseudo'=>$Pseudo, ':mail'=>$Mail,':Adresse'=>$Adresse,':image'=>$Image,':passwd'=>$Passwd,':NumTel'=>$NumTel);
+		$datas = array(':IDD'=>$IDD, ':ID'=>$ID, ':pseudo'=>$Pseudo, ':mail'=>$Mail,':Adresse'=>$Adresse,':image'=>$Image,':passwd'=>$Passwd,':NumTel'=>$NumTel,':IDP'=>$IDP);
 		$req->bindValue(':IDD',$IDD);
 		$req->bindValue(':ID',$ID);
 		$req->bindValue(':pseudo',$Pseudo);
@@ -87,7 +89,7 @@ try{
 		$req->bindValue(':image',$Image);
 		$req->bindValue(':passwd',$Passwd);
 		$req->bindValue(':NumTel',$NumTel);
-		
+		$req->bindValue(':IDP',$IDP);
 		
             $s=$req->execute();
 			
@@ -101,7 +103,7 @@ try{
 	}
 
 	function recupererAdmin($ID){
-		$sql="SELECT * from admin where ID=$ID";
+		$sql="SELECT * from admin where ID='$ID' ";
 		$db = config::getConnexion();
 		try{
 		$liste=$db->query($sql);
@@ -168,6 +170,21 @@ try{
             die('Erreur: '.$e->getMessage());
 		}
 	}
+
+	
+	function loginAdmin($mail,$mdp){
+		$sql="SElECT * From admin where mail='".$mail."' and passwd='".$mdp."'";
+		$db = config::getConnexion();
+		try{
+		$liste=$db->query($sql);
+		return $liste;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }	
+	}
+
+	
 }
 
 ?>

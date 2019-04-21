@@ -1,10 +1,31 @@
+<?PHP
+                                        include "../../../../core/ProjetC.php";
+                                        include "../../../../entities/Projet.php";
+                                        include "../../../../core/AdminC.php";
+                                        session_start();
+                                         if (isset($_SESSION["login_in"])) {
+                                        if ($_SESSION["ID"] == "superUser") {
+                                        if (isset($_GET['ID'])){
+                                            $ProjetC=new ProjetC();
+                                            $result=$ProjetC->recupererProjet($_GET['ID']);
+                                            foreach($result as $row){
+                                                $ID=$row['ID'];
+                                                $nom=$row['nom'];
+                                                $date=$row['date'];
+                                                $logo=$row['logo'];
+                                                $type=$row['type'];
+                                        $Projet1C=new ProjetC();
+                                        $listeODD=$Projet1C->afficherODD();
+                                        $Admin1C = new AdminC();
+                                        $currentUSER = $Admin1C->recupererAdmin($_SESSION["ID"]);
+?>
 <!doctype html>
 <html class="no-js" lang="">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Ajouter Admins</title>
-    <meta name="description" content="Ajouter Admins">
+    <title>Modifier Projet</title>
+    <meta name="description" content="Modifier Projet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="../../images/enactus-png.png">
     <link rel="shortcut icon" href="../../images/enactus-png.png">
@@ -239,46 +260,32 @@
                             </div>
                         </div>
                     </div>
+                    <?php 
+                            foreach ($currentUSER as $row) {
+                              
+                                ?>
+<div class="user-area dropdown float-right">
+                                    <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img class="user-avatar rounded-circle" src="../Gestion Admins/<?PHP echo $row['image']; ?>" alt="User Avatar">
+                                    </a>
 
-                    <div class="user-area dropdown float-right">
-                        <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="../../images/admin.jpg" alt="User Avatar">
-                        </a>
+                                    <div class="user-menu dropdown-menu">
+                                        <a class="nav-link" href="#"><i class="fa fa- user"></i>
+                                            <?PHP echo $row['pseudo']; ?></a>
+                                        <a class="nav-link" href="login/logout.php"><i class="fa fa-power -off"></i>Logout</a>
+                                    </div>
+                                </div>
 
-                        <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
-
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>
-
-                            <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
-
-                            <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
+                            </div>
                         </div>
-                    </div>
-
-                </div>
-            </div>
+                    <?php } ?>
         </header>
         <!-- /#header -->
 
         <!-- content -->
         <div class="content">
             <!-- Formulaire d'ajout -->
-            <?PHP
-                                        include "../../../../core/ProjetC.php";
-                                        include "../../../../entities/Projet.php";
-                                        if (isset($_GET['ID'])){
-                                            $ProjetC=new ProjetC();
-                                            $result=$ProjetC->recupererProjet($_GET['ID']);
-                                            foreach($result as $row){
-                                                $ID=$row['ID'];
-                                                $nom=$row['nom'];
-                                                $date=$row['date'];
-                                                $logo=$row['logo'];
-                                                $type=$row['type'];
-                                        $Projet1C=new ProjetC();
-                                        $listeODD=$Projet1C->afficherODD();
-                                        ?>
+
 <div>
     <div class="col-md-4" style="float:right;">
     </div>
@@ -286,25 +293,13 @@
         <div class="card">
             <div class="card-header">Ajouter Projet</div>
             <div class="card-body card-block">
+
                 <form method="post" onsubmit="return verifForm(this)" enctype="multipart/form-data" >
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-users"></i></div>
                             <input type="text" id="username" name="nomProjet" placeholder="Nom du Projet" value="<?php echo $nom ?>" class="form-control" oninput="verifPseudo(this)" />
                         </div>
-                    </div>
-                    <div class="form-group">
-                            <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                            <select name="select_Project" id="select" class="form-control" oninput="verifProjet(this)">
-                                    <option value="" label="Admin"></option>
-                                <option value="0">Taha</option>
-                                <option value="1">Ali</option>
-                                <option value="2">Mohsen</option>
-                                <option value="3">Rjeb</option>
-                            </select>
-                            </div>
-                    </div>
 
                     <div class="form-group">
                             <div class="input-group-addon"> <i class="fa fa-pagelines"></i> <br> Ajouter Votre LOGO</div>
@@ -351,7 +346,7 @@ foreach($listeODD as $row){
     $i++;
     ?>
 <th>
-    <td><input type="radio" name="ODD" id="ODD<?php echo $a?>">
+    <td><input id="ODD<?php echo $a?>" type="radio" name="ODD" value="./ODD/<?php echo $a?>.png">
      <label for="ODD<?php echo $a?>"><img src="./ODD/<?php echo $a?>.png"></label>
  </td>
 </th>
@@ -387,15 +382,88 @@ if (isset($_POST['Valider'])){
     {
         $file_store=$logo;
     }
-         $Projet1=new Projet("P".strtotime(date('H:i:s')),$_POST['nomProjet'],date('Y/m/d H:i:s'),$file_store,$_POST['ODD']);
+
+    if (isset($_POST['ODD']))
+    {
+        $ODD=$_POST['ODD'];
+    }
+    else
+    {
+        $ODD=$type;
+    }
+         $Projet1=new Projet($_POST['ID_ini'],$_POST['nomProjet'],date('Y/m/d H:i:s'),$file_store,$ODD);
          $Projet1C=new ProjetC();
          $Projet1C->modifierProjet($Projet1,$_POST['ID_ini']);
+ 
+///on supprime l'ancien dossier
+$dossier ='../../../FrontOfficeEnactus/Projet/'.$nom;
+$dir_iterator = new RecursiveDirectoryIterator($dossier);
+$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+foreach($iterator as $fichier){
+  $fichier->isDir() ? rmdir($fichier) : unlink($fichier);
+}
+
+rmdir($dossier);
+
+///on ajoute le nouveau dossier
+$dir_source = '../../../FrontOfficeEnactus/Projet/MODAL';
+$dir_dest = '../../../FrontOfficeEnactus/Projet/'.$_POST['nomProjet'];
+
+if (!file_exists($dir_dest))
+{
+mkdir($dir_dest, 0755);
+$dir_iterator = new RecursiveDirectoryIterator($dir_source, RecursiveDirectoryIterator::SKIP_DOTS);
+$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST); 
+foreach($iterator as $element){
+
+   if($element->isDir()){
+      mkdir($dir_dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+   } 
+   else{
+      copy($element, $dir_dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+   }
+}
+}
+
+//////////////////////////////////////////////////////
+///on supprime l'ancien dossier
+$dossier ='../../../FrontOfficeEnactus/client/Projet/'.$nom;
+$dir_iterator = new RecursiveDirectoryIterator($dossier);
+$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+foreach($iterator as $fichier){
+  $fichier->isDir() ? rmdir($fichier) : unlink($fichier);
+}
+
+rmdir($dossier);
+
+///on ajoute le nouveau dossier
+$dir_source = '../../../FrontOfficeEnactus/client/Projet/MODAL';
+$dir_dest = '../../../FrontOfficeEnactus/client/Projet/'.$_POST['nomProjet'];
+
+if (!file_exists($dir_dest))
+{
+mkdir($dir_dest, 0755);
+$dir_iterator = new RecursiveDirectoryIterator($dir_source, RecursiveDirectoryIterator::SKIP_DOTS);
+$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST); 
+foreach($iterator as $element){
+
+   if($element->isDir()){
+      mkdir($dir_dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+   } 
+   else{
+      copy($element, $dir_dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+   }
+}
+}
          ?>
          <script>
          alert("Succes");
     window.location = './CProjets.php';
          </script>
          <?php
+         echo $_POST['nomProjet']; 
          }?>
             </div>
         </div>
@@ -447,3 +515,4 @@ if (isset($_POST['Valider'])){
 
 </body>
 </html>
+        <?php } } ?>

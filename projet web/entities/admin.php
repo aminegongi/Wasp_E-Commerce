@@ -7,11 +7,12 @@ class Admin{
 	private $Image;
 	private $Passwd;
 	private $NumTel;
+	private $IDP;
 
 
 
 
-	function __construct($ID,$Pseudo,$Mail,$Adress,$Image,$Passwd,$NumTel){
+	function __construct($ID,$Pseudo,$Mail,$Adress,$Image,$Passwd,$NumTel,$IDP){
 		$this->ID=$ID;
 		$this->Pseudo=$Pseudo;
 		$this->Mail=$Mail;
@@ -19,6 +20,7 @@ class Admin{
 		$this->Image=$Image;
 		$this->Passwd=$Passwd;
 		$this->NumTel=$NumTel;
+		$this->IDP=$IDP;
 
 	}
 	
@@ -45,6 +47,10 @@ class Admin{
 		return $this->Adress;
 	}
 
+	function getIDP(){
+		return $this->IDP;
+	}
+
 	function setID($ID){
 		$this->ID=$ID;
 	}
@@ -65,6 +71,9 @@ class Admin{
 	}
 	function setNumTel($NumTel){
 		$this->NumTel=$NumTel;
+	}
+	function setIDP($IDP){
+		$this->IDP=$IDP;
 	}
 
 }
