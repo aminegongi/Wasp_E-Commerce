@@ -1,9 +1,15 @@
 <?PHP
+session_start();
+if (isset($_SESSION["login_in"])) {
+        if ($_SESSION["ID"] == "superUser") {
                                         include "../../../../core/ProjetC.php";
                                         include "../../../../entities/Projet.php";
+                                        include "../../../../core/AdminC.php";
                                         $Projet1C=new ProjetC();
                                         $listeProjet=$Projet1C->afficherProjets();
                                         $listeODD=$Projet1C->afficherODD();
+                                        $Admin1C = new AdminC();
+                                        $currentUSER = $Admin1C->recupererAdmin($_SESSION["ID"]);
                                 
                                         $sql="SElECT * From projet";
                                         $db = config::getConnexion();	
@@ -64,19 +70,13 @@
                             <li class="menu-item-has-children dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-user"></i>Gestion Admins</a>
                                 <ul class="sub-menu children dropdown-menu">                            
-                                    <li><i class="menu-icon fa fa-eye"></i><a href="../Gestion Admins/CAdmins.html">Consulter</a></li>
-                                    <li><i class="menu-icon fa fa-plus-circle"></i><a href="../Gestion Admins/AAdmins.html">Ajouter</a></li>
-                                    <li><i class="menu-icon fa fa-pencil-square-o"></i><a href="../Gestion Admins/MAdmins.html">Modifier</a></li>
-                                    <li><i class="menu-icon fa  fa-eraser"></i><a href="../Gestion Admins/SAdmins.html">Supprimer</a></li>
+                                    <li><i class="menu-icon fa fa-eye"></i><a href="../Gestion Admins/CAdmins.php">Consulter et Ajouter</a></li>
                                 </ul>
                             </li>
                             <li class="menu-item-has-children dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Gestion Projets</a>
                                 <ul class="sub-menu children dropdown-menu">
-                                    <li><i class="menu-icon fa fa-eye"></i><a href="../Gestion Projets/CProjets.html">Consulter</a></li>
-                                    <li><i class="menu-icon fa fa-plus-circle"></i><a href="../Gestion Projets/AProjets.html">Ajouter</a></li>
-                                    <li><i class="menu-icon fa fa-pencil-square-o"></i><a href="../Gestion Projets/MProjets.html">Modifier</a></li>
-                                    <li><i class="menu-icon fa  fa-eraser"></i><a href="../Gestion Projets/SProjets.html">Supprimer</a></li>
+                                    <li><i class="menu-icon fa fa-eye"></i><a href="../Gestion Projets/CProjets.php">Consulter et Ajouter</a></li>
                                 </ul>
                             </li>
         
@@ -165,16 +165,7 @@
                                     <li><i class="menu-icon fa  fa-eraser"></i><a href="../Marketing/SMarkiting.html">Supprimer</a></li>
                                 </ul>
                             </li>
-        
-        
-                            <li class="menu-title">Paramètres</li><!-- /.menu-title -->
-                            <li class="menu-item-has-children dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-gear "></i>Configuration</a>
-                                <ul class="sub-menu children dropdown-menu">
-                                    <li><i class="menu-icon fa fa-gears"></i><a href="#">Profil</a></li>
-                                    <li><i class="menu-icon fa fa-sign-out"></i><a href="#">Déconnection</a></li>
-                                </ul>
-                            </li>
+    
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </nav>
@@ -273,25 +264,26 @@
                             </div>
                         </div>
                     </div>
+                    <?php 
+                            foreach ($currentUSER as $row) {
+                              
+                                ?>
+                                <div class="user-area dropdown float-right">
+                                    <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img class="user-avatar rounded-circle" src="../Gestion Admins/<?PHP echo $row['image']; ?>" alt="User Avatar">
+                                    </a>
 
-                    <div class="user-area dropdown float-right">
-                        <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="../../images/admin.jpg" alt="User Avatar">
-                        </a>
+                                    <div class="user-menu dropdown-menu">
+                                        <a class="nav-link" href="#"><i class="fa fa- user"></i>
+                                            <?PHP echo $row['pseudo']; ?></a>
+                                        <a class="nav-link" href="login/logout.php"><i class="fa fa-power -off"></i>Logout</a>
+                                    </div>
+                                </div>
 
-                        <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
-
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>
-
-                            <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
-
-                            <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
+                            </div>
                         </div>
-                    </div>
+                    <?php } ?>
 
-                </div>
-            </div>
         </header>
         <!-- /#header -->
 
@@ -400,20 +392,6 @@
                         </div>
                     </div>
 
-    
-                    <div class="form-group">
-                            <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                            <select name="select_Project" id="select" class="form-control" oninput="verifProjet(this)">
-                                    <option value="" label="Admin"></option>
-                                <option value="0">Taha</option>
-                                <option value="1">Ali</option>
-                                <option value="2">Mohsen</option>
-                                <option value="3">Rjeb</option>
-                            </select>
-                            </div>
-                    </div>
-
                     <div class="form-group">
                             <div class="input-group-addon"> <i class="fa fa-pagelines"></i> <br> Ajouter Votre LOGO</div>
                             <br>
@@ -434,12 +412,8 @@
                     <input type="file" name="imageLogo" id="file" class="inputfile" accept="image/*" title="Ajouter des photos" onchange="loadFile(event)" />
                 </div>
                 
-
-                    <div class="form-group">
-                        <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-tasks"></i>    Objectifs de développement durable :</div>
-                            <div>
-                                <table>
+                <div>
+     <table>
 <?PHP
     $i=1;
     $j=1;
@@ -459,7 +433,7 @@ foreach($listeODD as $row){
     $i++;
     ?>
 <th>
-    <td><input type="radio" name="ODD" id="ODD<?php echo $a?>">
+    <td><input id="ODD<?php echo $a?>" type="radio" name="ODD" value="./ODD/<?php echo $a?>.png">
      <label for="ODD<?php echo $a?>"><img src="./ODD/<?php echo $a?>.png"></label>
  </td>
 </th>
@@ -467,8 +441,12 @@ foreach($listeODD as $row){
     $a++; 
 }
 ?>
-                            </table>
-                              </div>
+</table>
+</div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-tasks"></i>    Objectifs de développement durable :</div>
                         </div>
                     </div>
     
@@ -535,3 +513,4 @@ foreach($listeODD as $row){
 
 </body>
 </html>
+        <?php }} ?>

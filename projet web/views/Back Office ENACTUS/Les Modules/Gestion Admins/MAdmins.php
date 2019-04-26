@@ -1,3 +1,13 @@
+<?php
+//ob_start();
+include "../../../../entities/admin.php";
+include "../../../../core/AdminC.php";
+session_start();
+if(isset($_SESSION["login_in"]))
+        {
+            $Admin1C=new AdminC();
+            $currentUSER=$Admin1C->recupererAdmin($_SESSION["ID"]);
+?>
 <!doctype html>
 <html class="no-js" lang=""> 
 <head>
@@ -242,15 +252,14 @@
 
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="../../images/admin.jpg" alt="User Avatar">
+                        <?php foreach($currentUSER as $row){
+?>   
+                        <img class="user-avatar rounded-circle" src="<?PHP echo $row['image']; ?>" alt="User Avatar">
+                        
                         </a>
 
                         <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
-
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>
-
-                            <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
+                            <a class="nav-link" href="#"><i class="fa fa- user"></i><?PHP echo $row['pseudo']; ?></a>
 
                             <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
                         </div>
@@ -258,6 +267,7 @@
 
                 </div>
             </div>
+            <?php } ?>
         </header>
         <!-- /#header -->
 
@@ -272,9 +282,14 @@
                             <i class="fa fa-user"></i><strong class="card-title pl-2">Profil Admin</strong>
                         </div>
 <?php
-ob_start();
-include "../../../../entities/admin.php";
-include "../../../../core/AdminC.php";
+$sql="SElECT * From projet";
+$db = config::getConnexion();
+try{
+$listeProjet=$db->query($sql);
+}
+catch (Exception $e){
+    die('Erreur: '.$e->getMessage());
+}
 if (isset($_GET['ID'])){
     $AdminC=new AdminC();
     $result=$AdminC->recupererAdmin($_GET['ID']);
@@ -345,18 +360,18 @@ foreach($listeGouv as $row){
 ?><option><?php echo $row['gov'];?></option>
 <?php 
 }
-?></select>
+?>
+</select>
 </div>
                     </div>
                 <div class="form-group">
                         <div class="input-group">
                     <div class="input-group-addon"><i class="fa fa-tasks"></i></div>
-                        <select name="select_Project" id="select" class="form-control" oninput="verifProjet(this)" >
-                                <option value="" label="default"></option>
-                            <option value="0">Pure life</option>
-                            <option value="1">Acorn +</option>
-                            <option value="2">JareDrops</option>
-                            <option value="3">E-scope</option>
+                        <select name="IDP" id="select" class="form-control" oninput="verifProjet(this)" >
+                        <?php foreach($listeProjet as $row){ ?>
+                <option value="<?php echo $row['ID'];?>"><?php echo $row['nom'];?></option>
+<?php }
+?>
                         </select>
                         </div>
                 </div>
@@ -367,8 +382,9 @@ foreach($listeGouv as $row){
                     </div>
                 </div>
                 <div><input type="hidden" name="ID_ini" value="<?php echo $ID?>"></div>
-                    <div class="form-actions form-group"><input type="submit" value="Valider" class="btn btn-success btn-sm" style="float:right;"  /></div>
-     </form><?php }
+                    <div class="form-actions form-group"><input type="submit" name="Valider" value="Valider" class="btn btn-success btn-sm" style="float:right;"  /></div>
+     </form>
+     <?php }
 }if (isset($_POST['Valider'])){
          if (isset($_FILES['imageAdmin']))
          {
@@ -384,7 +400,7 @@ foreach($listeGouv as $row){
                 move_uploaded_file($file_tem_loc,$file_store); 
              }   
          }
-         $Admin=new Admin(strtotime(date('H:i:s')),$_POST['username'],$_POST['email'],$_POST['select_City'],$file_store,$_POST['password'],$_POST['phone']);
+         $Admin=new Admin(strtotime(date('H:i:s')),$_POST['username'],$_POST['email'],$_POST['select_City'],$file_store,$_POST['password'],$_POST['phone'],$_POST['IDP']);
          $Admin1C=new AdminC();
          $Admin1C->modifierAdmin($Admin,$_POST['ID_ini']);
          ?> 
@@ -393,6 +409,7 @@ foreach($listeGouv as $row){
     window.location = './CAdmins.php';
          </script>
          <?php
+        // header("location:./CAdmins.php");
          }?>
          </div>
     </div>
@@ -436,3 +453,4 @@ foreach($listeGouv as $row){
 
 </body>
 </html>
+        <?php } ?>
