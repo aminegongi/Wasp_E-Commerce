@@ -1,0 +1,120 @@
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+ 
+  p
+  {
+      color: black;
+  }
+  
+  .inputfileImage {
+      display: none;
+  }
+  
+  /* image */
+  
+  .caption-style-1{
+      list-style-type: none;
+      margin: 0px;
+      padding: 0px;
+      
+  }
+  
+  .caption-style-1 li{
+      float: left;
+      padding: 0px;
+      position: relative;
+      overflow: hidden;
+  }
+  
+  .caption-style-1 li:hover .caption{
+      opacity: 1;
+  
+  }
+  
+  
+  .caption-style-1 img{
+      border-radius: 50%;  
+      width: 150px;
+      height: 150px;
+      float: left;
+      z-index: 4;
+  }
+  
+  
+  .caption-style-1 .caption{
+      cursor: pointer;
+      position: absolute;
+      opacity: 0;
+      -webkit-transition:all 0.45s ease-in-out;
+      -moz-transition:all 0.45s ease-in-out;
+      -o-transition:all 0.45s ease-in-out;
+      -ms-transition:all 0.45s ease-in-out;
+      transition:all 0.45s ease-in-out;
+  }
+  
+  .caption-style-1 .blur{
+      border-radius: 50%;  
+      background-color: rgba(0,0,0,0.65);
+      width: 150px;
+      height: 150px;
+      z-index: 5;
+      position: absolute;
+  }
+  
+  .caption-style-1 .caption-text h1{
+      text-transform: uppercase;
+      font-size: 16px;
+  }
+  .caption-style-1 .caption-text p{
+      font-size: 14px;
+      color:rgb(180, 177, 177);
+  }
+  
+  .caption-style-1 .caption-text{
+      z-index: 10;
+      color: #fff;
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      text-align: center;
+      top:50px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
